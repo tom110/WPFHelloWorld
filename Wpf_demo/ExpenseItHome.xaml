@@ -1,0 +1,75 @@
+﻿<Page x:Class="Wpf_demo.ExpenseItHome"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="600"
+	Title="ExpenseIt - Home">
+
+    <Grid Margin="10,0,10,10">
+        <Grid.Resources>
+            <!-- 花销报表数据 -->
+            <XmlDataProvider x:Key="ExpenseDataSource" XPath="Expenses">
+                <x:XData>
+                    <Expenses xmlns="">
+                        <Person Name="小青" Department="法律部">
+                            <Expense ExpenseType="午饭" ExpenseAmount="50" />
+                            <Expense ExpenseType="交通费" ExpenseAmount="50" />
+                        </Person>
+                        <Person Name="小白" Department="市场部">
+                            <Expense ExpenseType="文档打印" ExpenseAmount="50"/>
+                            <Expense ExpenseType="礼物" ExpenseAmount="125" />
+                        </Person>
+                        <Person Name="小黄" Department="工程部">
+                            <Expense ExpenseType="杂志订阅" ExpenseAmount="50"/>
+                            <Expense ExpenseType="新设备" ExpenseAmount="600" />
+                            <Expense ExpenseType="软件" ExpenseAmount="500" />
+                        </Person>
+                        <Person Name="小黑" Department="金融部">
+                            <Expense ExpenseType="晚饭" ExpenseAmount="100" />
+                        </Person>
+                    </Expenses>
+                </x:XData>
+            </XmlDataProvider>
+            <!-- Name item template -->
+            <DataTemplate x:Key="nameItemTemplate">
+                <Label Content="{Binding XPath=@Name}"/>
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.Background>
+            <ImageBrush ImageSource="water.png"  />
+        </Grid.Background>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- People list -->
+
+        <Label Grid.Column="1" Style="{StaticResource headerTextStyle}" >
+            查看报表
+        </Label>
+
+
+        <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource listHeaderStyle}">
+            <Label Style="{StaticResource listHeaderTextStyle}">名字</Label>
+        </Border>
+        <ListBox Name="peopleListBox" Grid.Column="1" Grid.Row="2" 
+                 ItemsSource="{Binding Source={StaticResource ExpenseDataSource}, XPath=Person}"
+                 ItemTemplate="{StaticResource nameItemTemplate}">
+        </ListBox>
+
+        <!-- View report button -->
+        <Button Grid.Column="1" Grid.Row="3" Click="Button_Click" Style="{StaticResource buttonStyle}" Margin="0,10,0,0">查看</Button>
+    </Grid>
+
+</Page>
